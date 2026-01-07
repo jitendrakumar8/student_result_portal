@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Subject</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid justify-content-center">
+        <span class="navbar-brand h1 mb-0">Student Result Portal</span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h4>Edit Subject</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <form action="/admin/update-subject" method="post">
+
+                        <!-- ID hidden -->
+                        <input type="hidden" name="id" th:value="${subject.id}">
+
+
+                        <!-- Class -->
+                        <!-- Class -->
+                        <div class="mb-3">
+                            <label class="form-label">Class</label>
+                            <select name="className" class="form-select" required>
+                                <option th:each="c : ${classes}"
+                                        th:value="${c.className}"
+                                        th:text="${c.className}"
+                                        th:selected="${c.className == subject.className}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Section -->
+                        <div class="mb-3">
+                            <label class="form-label">Section</label>
+                            <select name="section" class="form-select" required>
+                                <option th:each="c : ${classes}"
+                                        th:value="${c.section}"
+                                        th:text="${c.section}"
+                                        th:selected="${c.section == subject.section}">
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <!-- Subject Name -->
+                        <div class="mb-3">
+                            <label class="form-label">Subject Name</label>
+                            <input type="text" name="subjectName"
+                                   class="form-control"
+                                   th:value="${subject.subjectName}" required>
+                        </div>
+
+                        <!-- Max Marks -->
+                        <div class="mb-3">
+                            <label class="form-label">Max Marks</label>
+                            <input type="number" name="maxMarks"
+                                   class="form-control"
+                                   th:value="${subject.maxMarks}" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-warning">
+                                Update Subject
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <div class="card-footer text-center">
+                    <a href="/admin/subjects" class="btn btn-outline-secondary btn-sm">
+                        ← Back To DashBoard!
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

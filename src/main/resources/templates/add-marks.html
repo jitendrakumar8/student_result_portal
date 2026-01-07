@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Marks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid justify-content-center">
+        <span class="navbar-brand h1 mb-0">Student Result Portal</span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h3 class="text-center mb-4">Add Marks</h3>
+
+    <!-- success msg -->
+    <div th:if="${successMessage}" class="alert alert-success text-center">
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg">
+                <div class="card-body">
+
+                    <form action="/admin/save-marks" method="post">
+
+                        <!-- Class -->
+                        <div class="mb-3">
+                            <label class="form-label">Class</label>
+                            <select name="className" class="form-select" required>
+                                <option value="">-- Select Class --</option>
+                                <option th:each="c : ${classes}"
+                                        th:value="${c.className}"
+                                        th:text="${c.className + ' ' + c.section}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Student -->
+                        <div class="mb-3">
+                            <label class="form-label">Student</label>
+                            <select name="studentId" class="form-select" required>
+                                <option value="">-- Select Student --</option>
+                                <option th:each="s : ${students}"
+                                        th:value="${s.id}"
+                                        th:text="${s.rollNumber + ' - ' + s.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Exam Type -->
+                        <div class="mb-3">
+                            <label class="form-label">Exam Type</label>
+                            <select name="examType" class="form-select" required>
+                                <option value="HALF_YEARLY">Half Yearly</option>
+                                <option value="ANNUAL">Annual</option>
+                            </select>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="mb-3">
+                            <label class="form-label">Subject</label>
+                            <select name="subjectName" class="form-select" required>
+                                <option value="">-- Select Subject --</option>
+                                <option th:each="s : ${subjects}"
+                                        th:value="${s.subjectName}"
+                                        th:text="${s.subjectName}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Marks -->
+                        <div class="mb-3">
+                            <label class="form-label">Marks</label>
+                            <input type="number" name="marks" class="form-control"
+                                   min="0" max="100" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-warning">
+                                Save Marks
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

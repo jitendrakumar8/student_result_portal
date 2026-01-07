@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Marks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand h1">Student Result Portal</span>
+
+        <a href="/admin/dashboard" class="btn btn-outline-light">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <h3 class="text-center mb-4">View Saved Marks</h3>
+
+    <!-- 🔹 FILTER FORM -->
+    <form action="/admin/load-marks" method="post"
+          class="card p-4 shadow mb-4">
+
+        <div class="row g-3">
+
+            <!-- CLASS -->
+            <select id="classSelect" name="className" class="form-select" required
+                    onchange="loadSections(this.value)">
+                <option value="">Select Class</option>
+                <option th:each="c : ${classList}"
+                        th:value="${c}"
+                        th:text="${c}">
+                </option>
+            </select>
+
+            <!-- SECTION -->
+            <select id="sectionSelect" name="section" class="form-select" required
+                    onchange="loadSubjects()">
+                <option value="">Select Section</option>
+            </select>
+
+            <!-- SUBJECT -->
+            <select id="subjectSelect" name="subjectName" class="form-select" required>
+                <option value="">Select Subject</option>
+            </select>
+
+            <div class="col-md-4">
+                <label class="form-label">Exam Type</label>
+                <select name="examType" class="form-select" required>
+                    <option value="HALF_YEARLY">Half Yearly</option>
+                    <option value="ANNUAL">Annual</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-3">
+            <button class="btn btn-primary">Load Marks</button>
+        </div>
+    </form>
+
+    <!-- 🔹 MARKS TABLE -->
+    <div th:if="${marksList}" class="card shadow">
+        <div class="card-body">
+
+            <h5 class="text-center mb-3">
+                Class: <span th:text="${className}"></span> |
+                Subject: <span th:text="${subjectName}"></span> |
+                Exam: <span th:text="${examType}"></span>
+            </h5>
+
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Marks</th>
+                    <th>Action</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+
+
+                <tr th:each="m : ${marksList}">
+                    <td th:text="${m.rollNumber}"></td>
+                    <td th:text="${m.studentName}"></td>
+                    <td th:text="${m.marksObtained}"></td>
+
+                    <td>
+                        <a th:href="@{/admin/edit-marks/{id}(id=${m.id})}"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <form th:action="@{/admin/delete-marks/{id}(id=${m.id})}"
+                              method="post"
+                              style="display:inline;"
+                              onsubmit="return confirm('Are you sure you want to delete this marks?')">
+
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+
+                        </form>
+                    </td>
+
+                </tr>
+
+
+                <tr th:if="${#lists.isEmpty(marksList)}">
+                    <td colspan="4" class="text-danger">
+                        No marks found!
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+    <script src="/js/class-section-subject.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Classes</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- 🔹 NAVBAR -->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid justify-content-center">
+        <span class="navbar-brand h1 mb-0">
+            Student Result Portal
+        </span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h3 class="text-center mb-4">All Classes</h3>
+
+    <div class="card shadow">
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Class</th>
+                    <th>Section</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${classes}">
+                    <td th:text="${c.id}"></td>
+                    <td th:text="${c.className}"></td>
+                    <td th:text="${c.section}"></td>
+                    <td>
+                        <a th:href="@{/admin/edit-class/{id}(id=${c.id})}"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(classes)}">
+                    <td colspan="3" class="text-danger">
+                        No classes found
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center mt-3">
+                <a href="/admin/add-class" class="btn btn-success">
+                    + Add New Class
+                </a>
+                <a href="/admin/dashboard" class="btn btn-secondary">
+                    Back to Dashboard
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

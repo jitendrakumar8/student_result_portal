@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Subject</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid justify-content-center">
+        <span class="navbar-brand h1 mb-0">Student Result Portal</span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-white text-center">
+                    <h4>Add Subject</h4>
+                </div>
+
+                <div class="card-body">
+
+
+                    <form action="/admin/add-subject" method="post">
+
+                        <!-- messages -->
+                        <div th:if="${errorMessage}" class="alert alert-danger text-center">
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+
+                        <div th:if="${successMessage}" class="alert alert-success text-center">
+                            <span th:text="${successMessage}"></span>
+                        </div>
+
+
+                        <!-- CLASS -->
+                        <label>Class</label>
+                        <select id="classSelect" name="className" class="form-select" required>
+                            <option value="">Select Class</option>
+                            <option th:each="c : ${classList}"
+                                    th:value="${c}"
+                                    th:text="${c}">
+                            </option>
+                        </select>
+
+
+                        <!-- SECTION -->
+                        <label class="mt-2">Section</label>
+                        <select id="sectionSelect" name="section" class="form-select" required>
+                            <option value="">Select Section</option>
+                        </select>
+
+
+                        <!-- SUBJECT -->
+                        <label class="mt-2">Subject Name</label>
+                        <input type="text" name="subjectName" class="form-control" required>
+
+                        <!-- MAX MARKS -->
+                        <label class="mt-2">Max Marks</label>
+                        <input type="number" name="maxMarks" class="form-control" required>
+
+                        <button class="btn btn-primary mt-3">Save Subject</button>
+
+                    </form>
+
+                </div>
+
+                <div class="card-footer text-center">
+                    <a href="/admin/dashboard" class="btn btn-outline-secondary btn-sm">
+                        ← Back to Dashboard
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById("classSelect").addEventListener("change", function () {
+        let className = this.value;
+        let sectionSelect = document.getElementById("sectionSelect");
+
+        sectionSelect.innerHTML = '<option value="">Select Section</option>';
+
+        if (className === "") return;
+
+        fetch('/admin/sections-by-class?className=' + className)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(section => {
+                    let option = document.createElement("option");
+                    option.value = section;
+                    option.text = section;
+                    sectionSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
+</body>
+</html>

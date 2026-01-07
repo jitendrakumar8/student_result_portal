@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Marks (Bulk)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand h1">Student Result Portal</span>
+
+        <a href="/admin/dashboard" class="btn btn-outline-light">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+
+    <h3 class="text-center mb-4">Add Marks (Bulk Entry)</h3>
+
+    <!-- success msg -->
+    <div th:if="${successMessage}" class="alert alert-success text-center">
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <!-- 🔹 STEP 1 FORM -->
+    <form action="/admin/load-students" method="post">
+
+        <!-- CLASS -->
+        <select id="classSelect"
+                name="className"
+                class="form-select"
+                required
+                onchange="loadSections(this.value)">
+            <option value="">Select Class</option>
+            <option th:each="c : ${classList}"
+                    th:value="${c}"
+                    th:text="${c}">
+            </option>
+        </select>
+
+
+        <!-- SECTION -->
+        <select id="sectionSelect"
+                name="section"
+                class="form-select"
+                required
+                onchange="loadSubjects()">
+            <option value="">Select Section</option>
+        </select>
+
+
+        <!-- SUBJECT -->
+        <select id="subjectSelect" name="subjectName" class="form-select" required>
+            <option value="">Select Subject</option>
+        </select>
+
+
+        <!-- EXAM -->
+        <select name="examType" class="form-select">
+            <option value="HALF_YEARLY">Half Yearly</option>
+            <option value="ANNUAL">Annual</option>
+        </select>
+
+        <button class="btn btn-primary mt-3">Load Students</button>
+    </form>
+
+
+
+
+    <!-- 🔹 STEP 2: STUDENT TABLE -->
+    <form th:if="${students}" action="/admin/save-all-marks" method="post">
+
+        <input type="hidden" name="className" th:value="${className}">
+        <input type="hidden" name="section" th:value="${section}">
+        <input type="hidden" name="subjectName" th:value="${subjectName}">
+        <input type="hidden" name="examType" th:value="${examType}">
+
+
+        <div class="card shadow">
+            <div class="card-body">
+
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Student Name</th>
+                        <th>Marks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="s : ${students}">
+                        <td th:text="${s.rollNumber}"></td>
+                        <td th:text="${s.name}"></td>
+
+                        <td>
+                            <input type="hidden" name="studentId"
+                                   th:value="${s.id}">
+                            <input type="number" name="marks"
+                                   class="form-control"
+                                   min="0" max="100" required>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="text-center">
+                    <button class="btn btn-success">
+                        Save All Marks
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="/js/class-section-subject.js"></script>
+</body>
+</html>
